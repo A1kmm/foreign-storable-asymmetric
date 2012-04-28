@@ -6,14 +6,19 @@ import Foreign.Storable
 import Foreign.Ptr
 import Control.Applicative
 
+-- | Used as a placeholder for no data.
 data NoData = NoData
+
 instance Storable NoData where
   sizeOf _ = 0
   alignment _ = 1
   peek _ = return NoData
   poke _ _ = return ()
 
+-- | A data structure where peek reads one structure, and poke writes another.
 data DifferentPeekPoke a b = PeekOut b | PokeIn a
+
+-- | Retrieves the 'peek' structure from a DifferentPeekPoke.
 getPeek (PeekOut b) = b
 getPeek (PokeIn a) = error "Attempt to call getPeek on poke input"
 
